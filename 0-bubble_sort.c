@@ -17,7 +17,7 @@ return;
 while (swap == true)
 {
 swap = false;
-for (i = 0; i  < size; i++)
+for (i = 0; i  < size - 1; i++)
 {
 if (array[i] > array[i + 1])
 {
