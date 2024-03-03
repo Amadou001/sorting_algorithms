@@ -8,23 +8,36 @@
 */
 void bubble_sort(int *array, size_t size)
 {
-size_t i, j;
-int temp = 0;
-if (size < 2)
+size_t i;
+bool swap = true;
+if (array == NULL || size < 2)
 {
 return;
 }
-for (i = 0; i < size; i++)
+while (swap == true)
 {
-for (j = 0; j < size; j++)
+swap = false;
+for (i = 0; i  < size; i++)
 {
-if (array[j] > array[j + 1])
+if (array[i] > array[i + 1])
 {
-temp = array[j];
-array[j] = array[j + 1];
-array[j + 1] = temp;
+swap_int(&array[i], &array[i + 1]);
 print_array(array, size);
+swap = true;
 }
 }
-} 
+}
+}
+
+/**
+ * swap_int - swaps two integers
+ * @first_elem: first integer
+ * @second_elem: second integer
+*/
+void swap_int(int *first_elem, int *second_elem)
+{
+int temp = 0;
+temp = *first_elem;
+*first_elem = *second_elem;
+*second_elem = temp;
 }
