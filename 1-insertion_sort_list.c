@@ -1,50 +1,46 @@
 #include "sort.h"
 
 /**
+ * swap_nodes - Swap two nodes in a listint_t doubly-linked list.
+ * @h: A pointer to the head of the doubly-linked list.
+ * @n1: A pointer to the first node to swap.
+ * @n2: The second node to swap.
+ */
+void swap_nodes(listint_t **h, listint_t **n1, listint_t *n2)
+{
+(*n1)->next = n2->next;
+if (n2->next != NULL)
+n2->next->prev = *n1;
+n2->prev = (*n1)->prev;
+n2->next = *n1;
+if ((*n1)->prev != NULL)
+(*n1)->prev->next = n2;
+else
+*h = n2;
+(*n1)->prev = n2;
+*n1 = n2->prev;
+}
+
+/**
  * insertion_sort_list - Sorts a doubly linked list of integers
- *                       in ascending order using Insertion sort algorithm.
- * @list: Pointer to a pointer to the head of the list.
+ *                       using the insertion sort algorithm.
+ * @list: A pointer to the head of a doubly-linked list of integers.
+ *
+ * Description: Prints the list after each swap.
  */
 void insertion_sort_list(listint_t **list)
 {
-    if (list == NULL || *list == NULL || (*list)->next == NULL)
-        return;  // Nothing to sort
-
-    listint_t *sorted = NULL;  // Initialize sorted list
-
-    // Traverse the original list
-    while (*list != NULL)
-    {
-        listint_t *current = *list;  // Point to the current node
-        *list = (*list)->next;  // Move to the next node
-
-        // If the sorted list is empty or the current node value is less than the sorted list's head value
-        if (sorted == NULL || current->n <= sorted->n)
-        {
-            current->prev = NULL;  // Set the previous pointer of the current node to NULL
-            current->next = sorted;  // Set the next pointer of the current node to the sorted list
-            if (sorted != NULL)
-                sorted->prev = current;  // Set the previous pointer of the sorted list's head to the current node
-            sorted = current;  // Update the sorted list's head
-        }
-        else
-        {
-            listint_t *temp = sorted;  // Point to the head of the sorted list
-
-            // Find the correct position to insert the current node in the sorted list
-            while (temp->next != NULL && temp->next->n < current->n)
-                temp = temp->next;
-
-            // Insert the current node into the sorted list
-            current->prev = temp;  // Set the previous pointer of the current node
-            current->next = temp->next;  // Set the next pointer of the current node
-            if (temp->next != NULL)
-                temp->next->prev = current;  // Set the previous pointer of the next node to the current node
-            temp->next = current;  // Update the next pointer of the previous node
-        }
-        print_list(*list);  // Print the list after each swap
-    }
-
-    // Update the list pointer to point to the sorted list
-    *list = sorted;
+listint_t *iter, *insert, *tmp;
+if (list == NULL || *list == NULL || (*list)->next == NULL)
+return;
+for (iter = (*list)->next; iter != NULL; iter = tmp)
+{
+tmp = iter->next;
+insert = iter->prev;
+while (insert != NULL && iter->n < insert->n)
+{
+swap_nodes(list, &insert, iter);
+print_list((const listint_t *)*list);
+}
+}
 }
